@@ -4,7 +4,7 @@ function toggleStep(element) {
 }
 
 // Switch demo tabs
-function switchTab(tabName) {
+function switchTab(tabName, event) {
     // Hide all demo contents
     document.querySelectorAll('.demo-content').forEach(content => {
         content.classList.remove('active');

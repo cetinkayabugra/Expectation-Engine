@@ -58,8 +58,8 @@ app.UseSwaggerUI(c =>
 });
 
 // Enable static files (serves wwwroot folder)
-app.UseStaticFiles();
 app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.UseCors("AllowAll");
 app.UseAuthorization();

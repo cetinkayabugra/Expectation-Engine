@@ -49,6 +49,7 @@ cd Expectation-Engine
 2. Start all services:
 ```bash
 docker compose up --build
+# Or with older Docker Compose v1: docker-compose up --build
 ```
 
 3. Access the services:

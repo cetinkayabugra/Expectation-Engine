@@ -51,14 +51,15 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Expectation Engine API v1");
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Expectation Engine API v1");
+});
+
+// Enable static files (serves wwwroot folder)
+app.UseStaticFiles();
+app.UseDefaultFiles();
 
 app.UseCors("AllowAll");
 app.UseAuthorization();

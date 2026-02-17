@@ -1,0 +1,6 @@
+@ExpectationEngine.API_HostAddress = http://localhost:5002
+
+GET {{ExpectationEngine.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

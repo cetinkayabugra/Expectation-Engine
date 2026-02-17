@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: expectation-engine-sql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong@Passw0rd -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - expectation-engine-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: expectation-engine-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ExpectationEngine;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;
+      - NlpServiceUrl=http://nlp-service:8000
+    ports:
+      - "5000:8080"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      nlp-service:
+        condition: service_started
+    networks:
+      - expectation-engine-network
+
+  nlp-service:
+    build:
+      context: ./ExpectationEngine.NLP
+      dockerfile: Dockerfile
+    container_name: expectation-engine-nlp
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - expectation-engine-network
+
+volumes:
+  sqlserver-data:
+
+networks:
+  expectation-engine-network:
+    driver: bridge

@@ -1,0 +1,6 @@
+services:
+  api:
+    volumes:
+      - ./ExpectationEngine.API:/app/src
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development

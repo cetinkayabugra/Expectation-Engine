@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expectation Engine - Equity Expectation Shift Detection System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🎯 Expectation Engine</h1>
+                <p class="tagline">Equity Expectation Shift Detection System</p>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#demo">Interactive Demo</a></li>
+                <li><a href="/swagger" target="_blank">API Docs</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">Understanding How Markets Shift</h1>
+            <p class="hero-subtitle">A comprehensive system that detects and predicts equity expectation shifts using machine learning, natural language processing, and financial analysis.</p>
+            <div class="hero-buttons">
+                <a href="#how-it-works" class="btn btn-primary">Explore How It Works</a>
+                <a href="#demo" class="btn btn-secondary">Try Interactive Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="section">
+        <div class="container">
+            <h2 class="section-title">What is Expectation Engine?</h2>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <div class="icon">📊</div>
+                    <h3>The Problem</h3>
+                    <p>Stock prices don't just reflect current reality—they reflect <strong>expectations</strong>. When these expectations shift, prices move dramatically. Traditional analysis often misses these shifts until it's too late.</p>
+                </div>
+                <div class="overview-card">
+                    <div class="icon">🔍</div>
+                    <h3>Our Solution</h3>
+                    <p>Expectation Engine combines multiple data sources—prices, news sentiment, earnings data, and analyst sentiment—to detect expectation shifts before they fully materialize in price movements.</p>
+                </div>
+                <div class="overview-card">
+                    <div class="icon">🤖</div>
+                    <h3>The Technology</h3>
+                    <p>Built with ASP.NET Core 8, Python FastAPI, and FinBERT (financial sentiment AI), our system processes real-time data to generate actionable predictions with confidence scores.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">How It Works: Step-by-Step</h2>
+            <p class="section-intro">Our system follows a carefully designed pipeline that transforms raw data into actionable insights. Click each step to learn more.</p>
+            
+            <div class="steps-container">
+                <!-- Step 1 -->
+                <div class="step-card" onclick="toggleStep(this)">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h3>Data Collection</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-details">
+                            <h4>📥 What We Collect</h4>
+                            <ul>
+                                <li><strong>Stock Prices:</strong> Historical OHLCV (Open, High, Low, Close, Volume) data</li>
+                                <li><strong>News Articles:</strong> Financial news from multiple sources</li>
+                                <li><strong>Earnings Data:</strong> Quarterly reports with EPS and revenue</li>
+                                <li><strong>Earnings Transcripts:</strong> Full text from earnings calls</li>
+                            </ul>
+                            
+                            <h4>🎯 Why This Matters</h4>
+                            <p>Different data sources capture different aspects of market expectations:</p>
+                            <ul>
+                                <li><strong>Prices</strong> show what the market has already priced in</li>
+                                <li><strong>News</strong> reveals changing narratives and sentiment</li>
+                                <li><strong>Earnings</strong> provide hard facts vs. expectations</li>
+                                <li><strong>Transcripts</strong> show management tone and future guidance</li>
+                            </ul>
+
+                            <h4>🔧 How It Works</h4>
+                            <p>Data is stored in a SQL Server database with 8 specialized tables. The API provides endpoints for each data type:</p>
+                            <div class="code-block">
+                                <code>POST /api/tickers    # Add stock symbol
+POST /api/prices     # Add price data
+POST /api/news       # Add news (auto-sentiment)
+POST /api/earnings   # Add earnings data</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card" onclick="toggleStep(this)">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h3>Sentiment Analysis</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-details">
+                            <h4>🧠 What We Analyze</h4>
+                            <p>Every news article and earnings transcript is analyzed using <strong>FinBERT</strong>, a specialized AI model trained on financial text that understands:</p>
+                            <ul>
+                                <li>Positive sentiment (bullish signals)</li>
+                                <li>Negative sentiment (bearish signals)</li>
+                                <li>Neutral sentiment (no clear direction)</li>
+                            </ul>
+
+                            <h4>🎯 Why This Matters</h4>
+                            <p>Text data contains crucial information that numbers alone can't capture:</p>
+                            <ul>
+                                <li><strong>Forward-looking statements</strong> from CEOs about future outlook</li>
+                                <li><strong>Market concerns</strong> expressed in news coverage</li>
+                                <li><strong>Sentiment shifts</strong> that precede price movements</li>
+                                <li><strong>Risk warnings</strong> buried in financial text</li>
+                            </ul>
+
+                            <h4>🔧 How It Works</h4>
+                            <p>When you POST news or transcripts, the API automatically calls our NLP service:</p>
+                            <div class="code-block">
+                                <code>1. User submits text → API receives it
+2. API calls NLP Service (Python FastAPI)
+3. FinBERT analyzes sentiment
+4. Returns: label + confidence score
+5. Stored with original data</code>
+                            </div>
+                            <p><strong>Example Result:</strong> "positive" (87% confidence)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card" onclick="toggleStep(this)">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <h3>Feature Engineering</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-details">
+                            <h4>⚙️ What We Compute</h4>
+                            <p>Raw data is transformed into machine learning features:</p>
+                            <ul>
+                                <li><strong>Price Features:</strong> Returns (5D, 20D), Volatility, Volume patterns</li>
+                                <li><strong>Sentiment Features:</strong> News sentiment (7-day average), Transcript sentiment</li>
+                                <li><strong>Earnings Features:</strong> EPS surprise, Revenue surprise</li>
+                                <li><strong>Market Features:</strong> Sector momentum, Market cap changes</li>
+                            </ul>
+
+                            <h4>🎯 Why This Matters</h4>
+                            <p>Machine learning models need structured, numerical features:</p>
+                            <ul>
+                                <li><strong>Normalization:</strong> Different data sources need common scales</li>
+                                <li><strong>Time alignment:</strong> All features must reference the same dates</li>
+                                <li><strong>Signal extraction:</strong> Raw data → meaningful patterns</li>
+                                <li><strong>Predictive power:</strong> Features that historically predict shifts</li>
+                            </ul>
+
+                            <h4>🔧 How It Works</h4>
+                            <p>Features are computed for specific dates and stored for model training:</p>
+                            <div class="code-block">
+                                <code>POST /api/features/compute?tickerId=1&date=2024-02-17
+
+Computes:
+- PriceReturn5D, PriceReturn20D
+- Volatility20D, Volume20DAvg
+- NewsSentiment7D, NewsCount7D
+- EarningsSurprise, TranscriptSentiment</code>
+                            </div>
+                            <p><em>Note: The starter repo includes stub implementations ready for your custom logic.</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step-card" onclick="toggleStep(this)">
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <h3>Prediction Generation</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-details">
+                            <h4>🎲 What We Predict</h4>
+                            <p>Using computed features, the system generates predictions:</p>
+                            <ul>
+                                <li><strong>Predicted Return:</strong> Expected price change (e.g., +5.2%)</li>
+                                <li><strong>Confidence Score:</strong> How certain we are (0-100%)</li>
+                                <li><strong>Target Date:</strong> When the prediction applies to</li>
+                                <li><strong>Model Version:</strong> Which ML model was used</li>
+                            </ul>
+
+                            <h4>🎯 Why This Matters</h4>
+                            <p>Predictions enable proactive decision-making:</p>
+                            <ul>
+                                <li><strong>Early signals:</strong> Act before the market fully adjusts</li>
+                                <li><strong>Risk assessment:</strong> Confidence scores guide position sizing</li>
+                                <li><strong>Opportunity identification:</strong> Find mispriced securities</li>
+                                <li><strong>Portfolio optimization:</strong> Allocate capital effectively</li>
+                            </ul>
+
+                            <h4>🔧 How It Works</h4>
+                            <p>The prediction engine combines all available features:</p>
+                            <div class="code-block">
+                                <code>POST /api/predictions/generate?tickerId=1&targetDate=2024-03-01
+
+1. Fetch latest features for ticker
+2. Apply ML model (e.g., Random Forest, Neural Net)
+3. Generate prediction + confidence
+4. Store prediction with feature snapshot
+5. Track actual outcome later for model improvement</code>
+                            </div>
+                            <p><strong>Starter repo note:</strong> Includes stub implementation—plug in your ML model!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="step-card" onclick="toggleStep(this)">
+                    <div class="step-header">
+                        <span class="step-number">5</span>
+                        <h3>Backtesting & Validation</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-details">
+                            <h4>📈 What We Test</h4>
+                            <p>Before using predictions in production, we validate them:</p>
+                            <ul>
+                                <li><strong>Historical Performance:</strong> How well did predictions work in the past?</li>
+                                <li><strong>Risk Metrics:</strong> Sharpe ratio, max drawdown, win rate</li>
+                                <li><strong>Strategy Testing:</strong> Test different trading rules</li>
+                                <li><strong>Model Comparison:</strong> Which model version performs best?</li>
+                            </ul>
+
+                            <h4>🎯 Why This Matters</h4>
+                            <p>Backtesting prevents costly mistakes:</p>
+                            <ul>
+                                <li><strong>Validation:</strong> Prove your model works before risking capital</li>
+                                <li><strong>Optimization:</strong> Find the best parameters and strategies</li>
+                                <li><strong>Reality check:</strong> Understand limitations and failure modes</li>
+                                <li><strong>Continuous improvement:</strong> Track performance over time</li>
+                            </ul>
+
+                            <h4>🔧 How It Works</h4>
+                            <p>Run backtests over historical periods:</p>
+                            <div class="code-block">
+                                <code>POST /api/backtests/run
+
+Parameters:
+- backtestName: "Conservative Strategy Q1"
+- startDate: "2024-01-01"
+- endDate: "2024-03-31"
+- modelVersion: "v1.0"
+
+Returns:
+- TotalReturn: +12.5%
+- SharpeRatio: 1.8
+- MaxDrawdown: -8.2%
+- WinRate: 62%
+- TotalTrades: 45</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="section">
+        <div class="container">
+            <h2 class="section-title">System Architecture</h2>
+            <p class="section-intro">Understanding how all the pieces fit together</p>
+            
+            <div class="architecture-diagram">
+                <div class="arch-layer">
+                    <h3>🌐 User Interface</h3>
+                    <div class="arch-components">
+                        <div class="arch-component">Web UI (This Page)</div>
+                        <div class="arch-component">Swagger API Docs</div>
+                        <div class="arch-component">REST Clients</div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow">↓</div>
+
+                <div class="arch-layer">
+                    <h3>🎯 API Service (ASP.NET Core 8)</h3>
+                    <div class="arch-components">
+                        <div class="arch-component">Controllers (8)</div>
+                        <div class="arch-component">Services (9)</div>
+                        <div class="arch-component">Entity Framework</div>
+                    </div>
+                </div>
+
+                <div class="arch-split">
+                    <div class="arch-arrow-left">↙</div>
+                    <div class="arch-arrow-right">↘</div>
+                </div>
+
+                <div class="arch-two-columns">
+                    <div class="arch-layer">
+                        <h3>🗄️ Database</h3>
+                        <div class="arch-components">
+                            <div class="arch-component">SQL Server 2022</div>
+                            <div class="arch-component small">8 Tables</div>
+                        </div>
+                    </div>
+
+                    <div class="arch-layer">
+                        <h3>🤖 NLP Service</h3>
+                        <div class="arch-components">
+                            <div class="arch-component">Python FastAPI</div>
+                            <div class="arch-component small">FinBERT Model</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tech-stack">
+                    <h3>🛠️ Technology Stack</h3>
+                    <div class="tech-badges">
+                        <span class="badge">.NET 8</span>
+                        <span class="badge">Python 3.11</span>
+                        <span class="badge">SQL Server</span>
+                        <span class="badge">Docker</span>
+                        <span class="badge">Entity Framework</span>
+                        <span class="badge">FastAPI</span>
+                        <span class="badge">FinBERT</span>
+                        <span class="badge">PyTorch</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-flow">
+                <h3>📊 Data Flow Example: Adding News with Sentiment</h3>
+                <div class="flow-steps">
+                    <div class="flow-step">
+                        <div class="flow-number">1</div>
+                        <p>User submits news article</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-number">2</div>
+                        <p>API receives POST /api/news</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-number">3</div>
+                        <p>NewsService calls SentimentService</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-number">4</div>
+                        <p>HTTP call to NLP service</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-number">5</div>
+                        <p>FinBERT analyzes text</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-number">6</div>
+                        <p>Returns sentiment score</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-number">7</div>
+                        <p>Saved to database</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo Section -->
+    <section id="demo" class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">🎮 Interactive Demo</h2>
+            <p class="section-intro">Try the system yourself with real API calls</p>
+
+            <div class="demo-container">
+                <!-- Demo Tab Navigation -->
+                <div class="demo-tabs">
+                    <button class="demo-tab active" onclick="switchTab('sentiment', event)">Sentiment Analysis</button>
+                    <button class="demo-tab" onclick="switchTab('ticker', event)">Get Ticker Info</button>
+                    <button class="demo-tab" onclick="switchTab('prices', event)">Get Prices</button>
+                </div>
+
+                <!-- Sentiment Analysis Demo -->
+                <div id="demo-sentiment" class="demo-content active">
+                    <h3>🧠 Test Sentiment Analysis</h3>
+                    <p>Enter financial text to see how FinBERT analyzes sentiment:</p>
+                    <textarea id="sentiment-input" placeholder="Example: The company reported strong quarterly earnings with revenue beating estimates by 15%. Management expressed confidence in continued growth..."></textarea>
+                    <button onclick="testSentiment()" class="btn btn-primary">Analyze Sentiment</button>
+                    <div id="sentiment-result" class="result-box"></div>
+                </div>
+
+                <!-- Ticker Demo -->
+                <div id="demo-ticker" class="demo-content">
+                    <h3>📊 Get Ticker Information</h3>
+                    <p>Fetch information about available stocks:</p>
+                    <button onclick="getAllTickers()" class="btn btn-primary">Get All Tickers</button>
+                    <div id="ticker-result" class="result-box"></div>
+                </div>
+
+                <!-- Prices Demo -->
+                <div id="demo-prices" class="demo-content">
+                    <h3>💹 Get Historical Prices</h3>
+                    <p>View price data for a specific ticker:</p>
+                    <div class="demo-input-group">
+                        <label>Ticker ID:</label>
+                        <input type="number" id="price-ticker-id" value="1" min="1">
+                        <button onclick="getPrices()" class="btn btn-primary">Get Prices</button>
+                    </div>
+                    <div id="prices-result" class="result-box"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section id="getting-started" class="section">
+        <div class="container">
+            <h2 class="section-title">🚀 Getting Started</h2>
+            
+            <div class="setup-grid">
+                <div class="setup-card">
+                    <h3>1️⃣ Prerequisites</h3>
+                    <ul>
+                        <li>Docker & Docker Compose</li>
+                        <li>(Optional) .NET 8 SDK</li>
+                        <li>(Optional) Python 3.11+</li>
+                    </ul>
+                </div>
+
+                <div class="setup-card">
+                    <h3>2️⃣ Quick Start</h3>
+                    <div class="code-block">
+                        <code>git clone [repo-url]
+cd Expectation-Engine
+docker-compose up -d</code>
+                    </div>
+                </div>
+
+                <div class="setup-card">
+                    <h3>3️⃣ Initialize Database</h3>
+                    <div class="code-block">
+                        <code># Linux/Mac
+./init-db.sh
+
+# Windows
+init-db.bat</code>
+                    </div>
+                </div>
+
+                <div class="setup-card">
+                    <h3>4️⃣ Access Services</h3>
+                    <ul>
+                        <li><a href="/">Web UI: localhost:5000</a></li>
+                        <li><a href="/swagger">API: localhost:5000/swagger</a></li>
+                        <li><a href="http://localhost:8000/docs" target="_blank">NLP: localhost:8000/docs</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Expectation Engine - Equity Expectation Shift Detection System</p>
+            <p>Built with ASP.NET Core 8, Python FastAPI, and FinBERT</p>
+            <div class="footer-links">
+                <a href="/swagger" target="_blank">API Documentation</a>
+                <a href="https://github.com/cetinkayabugra/Expectation-Engine" target="_blank">GitHub Repository</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

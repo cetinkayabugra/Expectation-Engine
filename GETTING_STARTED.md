@@ -1,8 +1,29 @@
 # Getting Started Guide
 
-## Quick Start (5 minutes)
+## ⚡ Quick Start (5 minutes)
 
-### 1. Start the System
+### Option 1: One-Command Startup (Easiest!)
+
+```bash
+# Clone the repository
+git clone https://github.com/cetinkayabugra/Expectation-Engine.git
+cd Expectation-Engine
+
+# Start everything with one command
+./start.sh          # Linux/Mac
+# OR
+start.bat           # Windows
+```
+
+That's it! The script will:
+- ✅ Start all services (SQL Server, API, NLP)
+- ✅ Wait for SQL Server to be ready
+- ✅ Initialize the database automatically
+- ✅ Display all access URLs
+
+### Option 2: Manual Startup
+
+If you prefer to run commands manually:
 
 ```bash
 # Clone the repository
@@ -10,7 +31,7 @@ git clone https://github.com/cetinkayabugra/Expectation-Engine.git
 cd Expectation-Engine
 
 # Start all services
-docker-compose up -d
+docker compose up -d
 ```
 
 This will start:
@@ -18,9 +39,7 @@ This will start:
 - API on port 5000
 - NLP Service on port 8000
 
-### 2. Initialize the Database
-
-Wait about 30 seconds for SQL Server to start, then:
+Then initialize the database (wait 30 seconds first):
 
 **On Linux/Mac:**
 ```bash
@@ -32,30 +51,49 @@ Wait about 30 seconds for SQL Server to start, then:
 init-db.bat
 ```
 
-Or manually:
+## ✅ Verify the Services
+
+Open your browser and check these URLs:
+
+- **🌐 Web UI**: http://localhost:5000 (Interactive guide with demos)
+- **📚 Swagger API Docs**: http://localhost:5000/swagger
+- **🤖 NLP Service Docs**: http://localhost:8000/docs
+
+### Command-Line Verification
+
+**Check container status:**
 ```bash
-docker exec expectation-engine-sql /opt/mssql-tools/bin/sqlcmd \
-  -S localhost -U sa -P 'YourStrong@Passw0rd' \
-  -Q "CREATE DATABASE ExpectationEngine;"
+docker compose ps
 ```
-
-Then execute the schema.sql and seed.sql files.
-
-### 3. Verify the Services
-
-Open your browser:
-
-- **Swagger UI**: http://localhost:5000/swagger
-- **NLP Service Docs**: http://localhost:8000/docs
-- **API Health Check**: http://localhost:5000/api/tickers
-
-### 4. Test the API
-
-Try these curl commands:
 
 **Get all tickers:**
 ```bash
 curl http://localhost:5000/api/tickers
+```
+
+**Test sentiment analysis:**
+```bash
+curl -X POST http://localhost:8000/score \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Strong quarterly earnings exceed expectations"}'
+```
+
+## 🛑 Stopping Services
+
+**Option 1: Use the stop script**
+```bash
+./stop.sh          # Linux/Mac
+# OR
+stop.bat           # Windows
+```
+
+**Option 2: Manual stop**
+```bash
+# Stop all services
+docker compose down
+
+# Stop and remove data volumes
+docker compose down -v
 ```
 
 **Get prices for Apple (TickerId=1):**
